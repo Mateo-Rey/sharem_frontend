@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useEffect } from "react"
-import { auth } from "../firebase"
+import React, { useContext, useState, useEffect } from "react"
+import { auth } from "./firebase"
 
-const AuthContext = createContext()
+const AuthContext = React.createContext()
 
 export function useAuth() {
   return useContext(AuthContext)
@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
   function resetPassword(email) {
     return auth.sendPasswordResetEmail(email)
   }
-  
+
   function updateEmail(email) {
     return currentUser.updateEmail(email)
   }
@@ -43,7 +43,6 @@ export function AuthProvider({ children }) {
 
     return unsubscribe
   }, [])
-  
 
   const value = {
     currentUser,

@@ -1,19 +1,48 @@
-import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import Login from './components/Login';
-import Home from './container/Home';
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import React from "react";
+import { Container } from "react-bootstrap";
+import { AuthProvider } from "./contexts/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import ForgotPassword from "./components/ForgotPassword";
+import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
+import Signup from "./components/Signup";
+import UpdateProfile from "./components/UpdateProfile";
+
 function App() {
   return (
-    <>
-    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_API_TOKEN}>
-    <Routes>
-      <Route path='login' element={<Login/>}/>
-      <Route path='/*' element={<Home/>}/>
-    </Routes>
-    </GoogleOAuthProvider>
-   
-    </>
+    <Container
+      className="d-flex align-items-top justify-content-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="w-100" style={{ maxWidth: "400px" }}>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              ></Route>
+              <Route
+                path="/update-profile"
+                element={
+                  <PrivateRoute>
+                    <UpdateProfile />
+                  </PrivateRoute>
+                }
+              ></Route>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Routes>
+          </AuthProvider>
+        </Router>
+      </div>
+    </Container>
   );
 }
 
